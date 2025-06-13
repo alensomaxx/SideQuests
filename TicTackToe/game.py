@@ -1,267 +1,160 @@
-# importing the required libraries
 import pygame as pg
 import sys
 import time
-from pygame.locals import *
 
-# declaring the global variables
-
-# for storing the 'x' or 'o'
-# value as character
-XO = 'x'
-
-# storing the winner's value at
-# any instant of code
-winner = None
-
-# to check if the game is a draw
-draw = None
-
-# to set width of the game window
-width = 400
-
-# to set height of the game window
-height = 400
-
-# to set background color of the
-# game window
-white = (255, 255, 255)
-
-# color of the straightlines on that
-# white game board, dividing board
-# into 9 parts
-line_color = (0, 0, 0)
-
-# setting up a 3 * 3 board in canvas
-board = [[None]*3, [None]*3, [None]*3]
-
-
-# initializing the pygame window
-pg.init()
-
-# setting fps manually
-fps = 30
-
-# this is used to track time
-CLOCK = pg.time.Clock()
-
-# this method is used to build the
-# infrastructure of the display
-screen = pg.display.set_mode((width, height + 100), 0, 32)
-
-# setting up a nametag for the
-# game window
-pg.display.set_caption("My Tic Tac Toe")
-
-# loading the images as python object
-initiating_window = pg.image.load("modified_cover.png")
-x_img = pg.image.load("X_modified.png")
-y_img = pg.image.load("o_modified.png")
-
-# resizing images
-initiating_window = pg.transform.scale(
-    initiating_window, (width, height + 100))
-x_img = pg.transform.scale(x_img, (80, 80))
-o_img = pg.transform.scale(y_img, (80, 80))
-
-
-def game_initiating_window():
-
-    # displaying over the screen
-    screen.blit(initiating_window, (0, 0))
-
-    # updating the display
-    pg.display.update()
-    time.sleep(3)
-    screen.fill(white)
-
-    # drawing vertical lines
-    pg.draw.line(screen, line_color, (width / 3, 0), (width / 3, height), 7)
-    pg.draw.line(screen, line_color, (width / 3 * 2, 0),
-                 (width / 3 * 2, height), 7)
-
-    # drawing horizontal lines
-    pg.draw.line(screen, line_color, (0, height / 3), (width, height / 3), 7)
-    pg.draw.line(screen, line_color, (0, height / 3 * 2),
-                 (width, height / 3 * 2), 7)
-    draw_status()
-
-
-def draw_status():
-
-    # getting the global variable draw
-    # into action
-    global draw
-
-    if winner is None:
-        message = XO.upper() + "'s Turn"
-    else:
-        message = winner.upper() + " won !"
-    if draw:
-        message = "Game Draw !"
-
-    # setting a font object
-    font = pg.font.Font(None, 30)
-
-    # setting the font properties like
-    # color and width of the text
-    text = font.render(message, 1, (255, 255, 255))
-
-    # copy the rendered message onto the board
-    # creating a small block at the bottom of the main display
-    screen.fill((0, 0, 0), (0, 400, 500, 100))
-    text_rect = text.get_rect(center=(width / 2, 500-50))
-    screen.blit(text, text_rect)
-    pg.display.update()
-
-
-def check_win():
-    global board, winner, draw
-
-    # checking for winning rows
-    for row in range(0, 3):
-        if((board[row][0] == board[row][1] == board[row][2]) and (board[row][0] is not None)):
-            winner = board[row][0]
-            pg.draw.line(screen, (250, 0, 0),
-                         (0, (row + 1)*height / 3 - height / 6),
-                         (width, (row + 1)*height / 3 - height / 6),
-                         4)
-            break
-
-    # checking for winning columns
-    for col in range(0, 3):
-        if((board[0][col] == board[1][col] == board[2][col]) and (board[0][col] is not None)):
-            winner = board[0][col]
-            pg.draw.line(screen, (250, 0, 0), ((col + 1) * width / 3 - width / 6, 0),
-                         ((col + 1) * width / 3 - width / 6, height), 4)
-            break
-
-    # check for diagonal winners
-    if (board[0][0] == board[1][1] == board[2][2]) and (board[0][0] is not None):
-
-        # game won diagonally left to right
-        winner = board[0][0]
-        pg.draw.line(screen, (250, 70, 70), (50, 50), (350, 350), 4)
-
-    if (board[0][2] == board[1][1] == board[2][0]) and (board[0][2] is not None):
-
-        # game won diagonally right to left
-        winner = board[0][2]
-        pg.draw.line(screen, (250, 70, 70), (350, 50), (50, 350), 4)
-
-    if(all([all(row) for row in board]) and winner is None):
-        draw = True
-    draw_status()
-
-
-def drawXO(row, col):
-    global board, XO
-
-    # for the first row, the image
-    # should be pasted at a x coordinate
-    # of 30 from the left margin
-    if row == 1:
-        posx = 30
-
-    # for the second row, the image
-    # should be pasted at a x coordinate
-    # of 30 from the game line
-    if row == 2:
-
-        # margin or width / 3 + 30 from
-        # the left margin of the window
-        posx = width / 3 + 30
-
-    if row == 3:
-        posx = width / 3 * 2 + 30
-
-    if col == 1:
-        posy = 30
-
-    if col == 2:
-        posy = height / 3 + 30
-
-    if col == 3:
-        posy = height / 3 * 2 + 30
-
-    # setting up the required board
-    # value to display
-    board[row-1][col-1] = XO
-
-    if(XO == 'x'):
-
-        # pasting x_img over the screen
-        # at a coordinate position of
-        # (pos_y, posx) defined in the
-        # above code
-        screen.blit(x_img, (posy, posx))
-        XO = 'o'
-
-    else:
-        screen.blit(o_img, (posy, posx))
-        XO = 'x'
-    pg.display.update()
-
-
-def user_click():
-    # get coordinates of mouse click
-    x, y = pg.mouse.get_pos()
-
-    # get column of mouse click (1-3)
-    if(x < width / 3):
-        col = 1
-
-    elif (x < width / 3 * 2):
-        col = 2
-
-    elif(x < width):
-        col = 3
-
-    else:
-        col = None
-
-    # get row of mouse click (1-3)
-    if(y < height / 3):
-        row = 1
-
-    elif (y < height / 3 * 2):
-        row = 2
-
-    elif(y < height):
-        row = 3
-
-    else:
-        row = None
-
-    # after getting the row and col,
-    # we need to draw the images at
-    # the desired positions
-    if(row and col and board[row-1][col-1] is None):
-        global XO
-        drawXO(row, col)
-        check_win()
-
-
-def reset_game():
-    global board, winner, XO, draw
-    time.sleep(3)
-    XO = 'x'
-    draw = False
-    game_initiating_window()
-    winner = None
-    board = [[None]*3, [None]*3, [None]*3]
-
-
-game_initiating_window()
-
-while(True):
-    for event in pg.event.get():
-        if event.type == QUIT:
-            pg.quit()
-            sys.exit()
-        elif event.type is MOUSEBUTTONDOWN:
-            user_click()
-            if(winner or draw):
-                reset_game()
-    pg.display.update()
-    CLOCK.tick(fps)
+class Game:
+    def __init__(self):
+        # --- Constants ---
+        self.WIDTH = 400
+        self.HEIGHT = 500 # Extra 100px for status bar
+        self.LINE_WIDTH = 15
+        self.BOARD_ROWS = 3
+        self.BOARD_COLS = 3
+        self.SQUARE_SIZE = self.WIDTH // self.BOARD_COLS
+        self.CIRCLE_RADIUS = self.SQUARE_SIZE // 3
+        self.CIRCLE_WIDTH = 15
+        self.CROSS_WIDTH = 25
+        
+        # --- Colors ---
+        self.BG_COLOR = (28, 170, 156)
+        self.LINE_COLOR = (23, 145, 135)
+        self.CIRCLE_COLOR = (239, 231, 200)
+        self.CROSS_COLOR = (66, 66, 66)
+        self.STATUS_BG_COLOR = (0, 0, 0)
+        self.TEXT_COLOR = (255, 255, 255)
+        self.WIN_LINE_COLOR = (255, 0, 0)
+
+        # --- Pygame Setup ---
+        pg.init()
+        self.screen = pg.display.set_mode((self.WIDTH, self.HEIGHT))
+        pg.display.set_caption('Tic Tac Toe')
+        self.font = pg.font.Font(None, 40)
+        self.clock = pg.time.Clock()
+        
+        # --- Game Variables ---
+        self.reset_game()
+
+    def reset_game(self):
+        """ Resets the game to its initial state. """
+        self.board = [[None] * self.BOARD_COLS for _ in range(self.BOARD_ROWS)]
+        self.turn = 'X'
+        self.winner = None
+        self.draw = False
+        self.win_line = None
+
+    def draw_lines(self):
+        """ Draws the grid lines for the board. """
+        self.screen.fill(self.BG_COLOR)
+        # Horizontal
+        pg.draw.line(self.screen, self.LINE_COLOR, (0, self.SQUARE_SIZE), (self.WIDTH, self.SQUARE_SIZE), self.LINE_WIDTH)
+        pg.draw.line(self.screen, self.LINE_COLOR, (0, 2 * self.SQUARE_SIZE), (self.WIDTH, 2 * self.SQUARE_SIZE), self.LINE_WIDTH)
+        # Vertical
+        pg.draw.line(self.screen, self.LINE_COLOR, (self.SQUARE_SIZE, 0), (self.SQUARE_SIZE, self.WIDTH), self.LINE_WIDTH)
+        pg.draw.line(self.screen, self.LINE_COLOR, (2 * self.SQUARE_SIZE, 0), (2 * self.SQUARE_SIZE, self.WIDTH), self.LINE_WIDTH)
+
+    def draw_figures(self):
+        """ Draws the X's and O's on the board. """
+        for row in range(self.BOARD_ROWS):
+            for col in range(self.BOARD_COLS):
+                if self.board[row][col] == 'O':
+                    center = (int(col * self.SQUARE_SIZE + self.SQUARE_SIZE / 2), int(row * self.SQUARE_SIZE + self.SQUARE_SIZE / 2))
+                    pg.draw.circle(self.screen, self.CIRCLE_COLOR, center, self.CIRCLE_RADIUS, self.CIRCLE_WIDTH)
+                elif self.board[row][col] == 'X':
+                    x_pos = col * self.SQUARE_SIZE
+                    y_pos = row * self.SQUARE_SIZE
+                    margin = self.SQUARE_SIZE // 4
+                    pg.draw.line(self.screen, self.CROSS_COLOR, (x_pos + margin, y_pos + margin), (x_pos + self.SQUARE_SIZE - margin, y_pos + self.SQUARE_SIZE - margin), self.CROSS_WIDTH)
+                    pg.draw.line(self.screen, self.CROSS_COLOR, (x_pos + margin, y_pos + self.SQUARE_SIZE - margin), (x_pos + self.SQUARE_SIZE - margin, y_pos + margin), self.CROSS_WIDTH)
+
+    def make_move(self, row, col):
+        """ Marks a square on the board for the current player. """
+        if self.board[row][col] is None and self.winner is None:
+            self.board[row][col] = self.turn
+            self.turn = 'O' if self.turn == 'X' else 'X'
+            self.check_win()
+
+    def check_win(self):
+        """ Checks for a win or a draw. """
+        # Check rows
+        for row in range(self.BOARD_ROWS):
+            if self.board[row][0] == self.board[row][1] == self.board[row][2] and self.board[row][0] is not None:
+                self.winner = self.board[row][0]
+                y = row * self.SQUARE_SIZE + self.SQUARE_SIZE / 2
+                self.win_line = ((0, y), (self.WIDTH, y))
+                return
+
+        # Check columns
+        for col in range(self.BOARD_COLS):
+            if self.board[0][col] == self.board[1][col] == self.board[2][col] and self.board[0][col] is not None:
+                self.winner = self.board[0][col]
+                x = col * self.SQUARE_SIZE + self.SQUARE_SIZE / 2
+                self.win_line = ((x, 0), (x, self.WIDTH))
+                return
+
+        # Check diagonals
+        if self.board[0][0] == self.board[1][1] == self.board[2][2] and self.board[0][0] is not None:
+            self.winner = self.board[0][0]
+            self.win_line = ((self.SQUARE_SIZE / 4, self.SQUARE_SIZE / 4), (self.WIDTH - self.SQUARE_SIZE / 4, self.WIDTH - self.SQUARE_SIZE / 4))
+            return
+        if self.board[0][2] == self.board[1][1] == self.board[2][0] and self.board[0][2] is not None:
+            self.winner = self.board[0][2]
+            self.win_line = ((self.SQUARE_SIZE / 4, self.WIDTH - self.SQUARE_SIZE / 4), (self.WIDTH - self.SQUARE_SIZE / 4, self.SQUARE_SIZE / 4))
+            return
+            
+        # Check for a draw
+        if all(all(cell is not None for cell in row) for row in self.board) and self.winner is None:
+            self.draw = True
+
+    def draw_status(self):
+        """ Displays the game status (Turn, Winner, or Draw). """
+        if self.winner:
+            message = f"{self.winner} has won!"
+        elif self.draw:
+            message = "It's a Draw!"
+        else:
+            message = f"{self.turn}'s Turn"
+
+        text = self.font.render(message, True, self.TEXT_COLOR)
+        text_rect = text.get_rect(center=(self.WIDTH / 2, self.HEIGHT - 50))
+        
+        # Draw a black rectangle for the status bar background
+        pg.draw.rect(self.screen, self.STATUS_BG_COLOR, (0, self.WIDTH, self.WIDTH, 100))
+        self.screen.blit(text, text_rect)
+
+        if self.winner or self.draw:
+            # Add a "Click to play again" message
+            restart_text = self.font.render("Click to play again", True, self.TEXT_COLOR)
+            restart_rect = restart_text.get_rect(center=(self.WIDTH / 2, self.HEIGHT - 20))
+            self.screen.blit(restart_text, restart_rect)
+
+
+    def run(self):
+        """ Main game loop. """
+        while True:
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    pg.quit()
+                    sys.exit()
+                if event.type == pg.MOUSEBUTTONDOWN:
+                    if self.winner or self.draw:
+                        time.sleep(0.5) # Brief pause before reset
+                        self.reset_game()
+                    else:
+                        mouseX, mouseY = event.pos
+                        if mouseY < self.WIDTH: # Ensure click is on the board
+                            clicked_row = int(mouseY // self.SQUARE_SIZE)
+                            clicked_col = int(mouseX // self.SQUARE_SIZE)
+                            self.make_move(clicked_row, clicked_col)
+            
+            self.draw_lines()
+            self.draw_figures()
+            if self.winner and self.win_line:
+                 pg.draw.line(self.screen, self.WIN_LINE_COLOR, self.win_line[0], self.win_line[1], self.LINE_WIDTH)
+            self.draw_status()
+            
+            pg.display.update()
+            self.clock.tick(30)
+
+if __name__ == '__main__':
+    game = Game()
+    game.run()
