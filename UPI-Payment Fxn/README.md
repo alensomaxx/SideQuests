@@ -27,16 +27,6 @@ Friendly alerts guide users through errors, successful actions, and completed tr
 
 ---
 
-## 🧪 Demo Preview
-
-| Feature        | Screenshot |
-|----------------|------------|
-| QR Code        | ![QR](https://via.placeholder.com/250x250.png?text=QR+Code+Here) |
-| Receipt Sample | ![Receipt](https://via.placeholder.com/500x150.png?text=Sample+Receipt) |
-
-<sub>\*Screenshots are placeholders. Replace with real previews if you'd like.</sub>
-
----
 
 ## ⚙️ How It Works
 
