@@ -3,9 +3,9 @@ import random
 def create_deck():
     """
     Initializes a deck of 21 cards.
-    Cards can be represented as numbers, strings, etc.
+    Cards are represented as strings like "Card 1", "Card 2", etc.
     """
-    return [f"Card {i}" for i in range(1, 22)] # Example: ['Card 1', ..., 'Card 21']
+    return [f"Card {i}" for i in range(1, 22)]
 
 def display_piles(piles):
     """
@@ -13,40 +13,40 @@ def display_piles(piles):
     """
     for i, pile in enumerate(piles):
         print(f"--- Pile {i+1} ---")
+        # Print cards in an easy-to-read format, e.g., on separate lines or with good spacing
         print(", ".join(pile))
     print("-" * 20)
 
 def reassemble_deck(piles, chosen_pile_index):
     """
-    Reassembles the deck based on the player's choice.
-    The chosen pile is always placed in the middle.
+    Reassembles the deck based on the player's choice,
+    ensuring the chosen pile is always placed in the middle.
+
+    Args:
+        piles (list of lists): The three current piles of cards.
+        chosen_pile_index (int): The 0-based index of the pile chosen by the player.
+
+    Returns:
+        list: The newly reassembled deck of 21 cards.
     """
-    chosen_pile = piles[chosen_pile_index]
-    other_piles = [p for i, p in enumerate(piles) if i != chosen_pile_index]
+    # The logic here is crucial for the trick to work.
+    # The chosen pile always goes in the middle.
+    if chosen_pile_index == 0:  # Player chose Pile 1 (index 0)
+        # New order: Pile 2 + Pile 1 + Pile 3
+        return piles[1] + piles[0] + piles[2]
+    elif chosen_pile_index == 1: # Player chose Pile 2 (index 1)
+        # New order: Pile 1 + Pile 2 + Pile 3 (Pile 2 is already in the middle)
+        return piles[0] + piles[1] + piles[2]
+    else: # Player chose Pile 3 (index 2)
+        # New order: Pile 1 + Pile 3 + Pile 2
+        return piles[0] + piles[2] + piles[1]
 
-    # The trick: place the chosen pile in the middle
-    # There are two 'other' piles. We need to decide which one goes first.
-    # A simple way: concatenate them such that the chosen pile is always central.
-    # For example, if chosen_pile_index is 0 (Pile 1), it goes between other_piles[0] and other_piles[1]
-    # If chosen_pile_index is 1 (Pile 2), it stays between other_piles[0] and other_piles[1]
-    # If chosen_pile_index is 2 (Pile 3), it goes between other_piles[0] and other_piles[1]
-
-    # Let's correctly implement the reassembly as per the trick's requirement:
-    # If chosen pile is P1, new deck = P2 + P1 + P3 (assuming P2, P3 are the others)
-    # If chosen pile is P2, new deck = P1 + P2 + P3 (assuming P1, P3 are the others)
-    # If chosen pile is P3, new deck = P1 + P3 + P2 (assuming P1, P2 are the others)
-
-    if chosen_pile_index == 0:  # Player chose Pile 1
-        return other_piles[0] + chosen_pile + other_piles[1]
-    elif chosen_pile_index == 1: # Player chose Pile 2
-        return other_piles[0] + chosen_pile + other_piles[1]
-    else: # Player chose Pile 3
-        return other_piles[0] + chosen_pile + other_piles[1]
-
-
-def play_game():
+def play_game(debug_mode=False):
     """
     Main function to run the 21-card mind game.
+
+    Args:
+        debug_mode (bool): If True, reveals the chosen card's position for debugging.
     """
     deck = create_deck()
     random.shuffle(deck) # Initial shuffle for randomness
@@ -56,12 +56,24 @@ def play_game():
     print("-" * 50)
     print(", ".join(deck))
     print("-" * 50)
-    input("Press Enter when you have chosen your card...")
+
+    # In a real game, the user would remember a card.
+    # For debugging, we can simulate them picking one, or have them tell us.
+    if debug_mode:
+        print("\n--- DEBUG MODE ---")
+        chosen_card_str = input("DEBUG: Which card will you 'mentally' choose? (e.g., 'Card 5'): ")
+        while chosen_card_str not in deck:
+            chosen_card_str = input(f"DEBUG: '{chosen_card_str}' not in deck. Please enter a valid card (e.g., 'Card 5'): ")
+        print(f"DEBUG: You 'chose' {chosen_card_str}. We will track this.\n")
+    else:
+        input("Press Enter when you have chosen your card...")
 
     current_deck = deck
 
-    for round_num in range(1, 4):
+    for round_num in range(1, 4): # The trick requires exactly 3 rounds
         print(f"\n--- Round {round_num} ---")
+        
+        # Divide the current deck into three piles of 7 cards each
         piles = [current_deck[i:i+7] for i in range(0, 21, 7)]
         display_piles(piles)
 
@@ -78,25 +90,28 @@ def play_game():
         # Adjust choice to 0-based index for list access
         chosen_pile_idx = choice - 1
         
-        # Reassemble the deck based on the chosen pile
-        # This part is critical for the trick to work.
-        # The chosen pile must be placed in the *middle* position.
-        
-        if chosen_pile_idx == 0: # If player chose Pile 1 (index 0)
-            current_deck = piles[1] + piles[0] + piles[2] # P2 + P1 + P3
-        elif chosen_pile_idx == 1: # If player chose Pile 2 (index 1)
-            current_deck = piles[0] + piles[1] + piles[2] # P1 + P2 + P3
-        else: # If player chose Pile 3 (index 2)
-            current_deck = piles[0] + piles[2] + piles[1] # P1 + P3 + P2
+        # Reassemble the deck using the helper function
+        current_deck = reassemble_deck(piles, chosen_pile_idx)
+
+        if debug_mode:
+            try:
+                # Find the position of the chosen card in the reassembled deck
+                current_position = current_deck.index(chosen_card_str)
+                print(f"DEBUG: After round {round_num}, '{chosen_card_str}' is at index {current_position} (position {current_position + 1}).")
+            except ValueError:
+                print(f"DEBUG: Error: '{chosen_card_str}' not found in the deck after reassembly. (This shouldn't happen!)")
+
 
     print("\n--- The Grand Reveal! ---")
-    print("After all that shuffling, your chosen card must be...")
+    print("After all that mystical shuffling, your chosen card must be...")
     
     # The magic moment: the 11th card (index 10) is always the chosen one!
     predicted_card = current_deck[10] 
     print(f"Is it... {predicted_card}?! ✨")
-    print("\nThanks for playing Oracle Deck!")
+    print("\nThanks for playing The Oracle Deck!")
 
 
 if __name__ == "__main__":
-    play_game()
+    # To run in debug mode, change play_game() to play_game(debug_mode=True)
+    # This will ask you to "mentally choose" a card and then track its position.
+    play_game(debug_mode=False)
