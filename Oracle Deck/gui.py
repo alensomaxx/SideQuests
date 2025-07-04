@@ -316,17 +316,10 @@ class OracleDeckApp(QMainWindow):
         subtitle = QLabel("Prepare to have your mind read!")
         subtitle.setObjectName("WelcomeSubtitle")
         
-        try:
-            pixmap = QPixmap('magic_hat.png')
-            if pixmap.isNull(): raise FileNotFoundError
-            image_label = QLabel()
-            image_label.setPixmap(pixmap.scaled(250, 250, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation))
-            image_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        except (FileNotFoundError, Exception) as e:
-            print(f"Warning: Could not load 'magic_hat.png'. {e}. Using fallback emoji.")
-            image_label = QLabel("🔮")
-            image_label.setFont(QFont("Segoe UI", 80))
-            image_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        
+        image_label = QLabel("🔮")
+        image_label.setFont(QFont("Segoe UI", 80))
+        image_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         start_button = QPushButton("Start Game")
         start_button.clicked.connect(self.start_game)
