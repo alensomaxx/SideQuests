@@ -4,6 +4,15 @@ A **classic Tic Tac Toe** game built using **Python** and **Pygame**, featuring 
 This project helped me solidify key concepts like **game loops**, **event handling**, and **UI logic** in Python.
 
 ---
+## 📥 Download & Play
+
+Click the button below to download the **Windows Executable (.exe)** file and start playing instantly:
+
+[![Download EXE](https://img.shields.io/badge/Download-TicTackToe.exe-blue?style=for-the-badge)](https://github.com/alensomaxx/SideQuests/releases/download/TicTacToe/TicTackToe.exe)
+
+> ⚠️ Note: Make sure you have the necessary permissions to run `.exe` files on your system.
+
+---
 
 ## ✨ Features
 
@@ -27,15 +36,6 @@ This project helped me solidify key concepts like **game loops**, **event handli
 
 ---
 
-## 📥 Download & Play
-
-Click the button below to download the **Windows Executable (.exe)** file and start playing instantly:
-
-[![Download EXE](https://img.shields.io/badge/Download-TicTackToe.exe-blue?style=for-the-badge)](https://github.com/alensomaxx/SideQuests/releases/download/TicTacToe/TicTackToe.exe)
-
-> ⚠️ Note: Make sure you have the necessary permissions to run `.exe` files on your system.
-
----
 
 ## 🧑‍💻 Developer Note
 
@@ -50,8 +50,4 @@ Your feedback is always appreciated 💬
 
 ---
 
-## 🗂️ Repository
 
-🔗 [**View Source Code on GitHub**](https://github.com/alensomaxx/SideQuests/TicTackToe)
-
----
