@@ -7,6 +7,13 @@ def create_deck():
     """
     return [f"Card {i}" for i in range(1, 22)]
 
+def deal_into_piles(deck):
+    piles = [[], [], []]
+    for index, card in enumerate(deck):
+        piles[index % 3].append(card)
+    return piles
+
+
 def display_piles(piles):
     """
     Prints the three piles clearly for the player to see.
@@ -74,7 +81,8 @@ def play_game(debug_mode=False):
         print(f"\n--- Round {round_num} ---")
         
         # Divide the current deck into three piles of 7 cards each
-        piles = [current_deck[i:i+7] for i in range(0, 21, 7)]
+        piles = deal_into_piles(current_deck)
+
         display_piles(piles)
 
         while True:
