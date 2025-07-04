@@ -8,7 +8,7 @@ A mesmerizing **card prediction trick** built with **Python** and **PyQt6**, des
 
 Click the button below to download the **Windows Executable (.exe)** file and start playing instantly:
 
-[![Download EXE](https://img.shields.io/badge/Download-TicTackToe.exe-blue?style=for-the-badge)](https://github.com/alensomaxx/SideQuests/releases/download/OracleDeck/OracleDeckApp.exe)
+[![Download EXE](https://img.shields.io/badge/Download-OracleDeckApp.exe-blue?style=for-the-badge)](https://github.com/alensomaxx/SideQuests/releases/download/OracleDeck/OracleDeckApp.exe)
 
 > ⚠️ Note: Make sure you have the necessary permissions to run `.exe` files on your system.
 
