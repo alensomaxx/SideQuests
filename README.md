@@ -51,11 +51,10 @@ Feel free to open issues or submit pull requests — I’d love to see how other
 ## 📌 Projects So Far
 
 | Quest             | Description                                                  |
-|------------------|--------------------------------------------------------------|
+|-------------------|--------------------------------------------------------------|
 | 🕹️ TicTacToe     | A clean 2-player game built with **Python** and **Pygame**, focusing on game loops and UI rendering. |
 | 💸 UPI Payment FXN | A Tkinter-based GUI tool for **generating custom UPI QR codes**, sending UPI ID requests, and issuing digital receipts — perfect for small businesses. |
-
----
+| 🃏 The Oracle Deck | A mesmerizing **card prediction trick** built with **Python** and **PyQt6**, showcasing GUI development and classic algorithmic magic. |
 
 ## 📮 Final Note
 
