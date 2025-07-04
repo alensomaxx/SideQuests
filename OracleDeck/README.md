@@ -67,6 +67,4 @@ Your contributions and feedback are always welcome 💬
 
 ---
 
-## 🗂️ Repository
 
-🔗 [**View Source Code on GitHub**](https://github.com/YOUR_USERNAME/the-oracle-deck)
