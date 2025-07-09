@@ -31,7 +31,7 @@ Instead of letting them collect dust, I'm sharing them here — polished or not 
 ## 🧭 How to Use This Repo
 
 - Browse the folders or scripts for anything that catches your eye.
-- Each project includes its **own README**, instructions, and notes.
+- Each project includes its **own README**, instructions, and my notes.
 - Most scripts are built with **Python**, and some may require additional libraries (noted in the respective files).
 
 ---
