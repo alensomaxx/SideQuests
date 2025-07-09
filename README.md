@@ -58,7 +58,6 @@ Feel free to open issues or submit pull requests — I’d love to see how other
 
 ## 📮 Final Note
 
-What about i building some of these small projects as a web extension?
 
 If you’re a curious coder or just someone who enjoys micro-projects, hit ⭐️ on the repo and follow along — new quests are always loading…
 
