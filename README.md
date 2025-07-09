@@ -45,6 +45,7 @@ You're welcome to:
 - Fork and remix any quest as your own
 
 Feel free to open issues or submit pull requests — I’d love to see how others expand on these ideas!
+Maybe I should try Web Extensions?
 
 ---
 
