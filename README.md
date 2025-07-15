@@ -46,6 +46,7 @@ You're welcome to:
 
 Feel free to open issues or submit pull requests — I’d love to see how others expand on these ideas!
 Maybe I should try Web Extensions?
+How to do this?
 
 ---
 
